@@ -9,7 +9,6 @@ public class Player : MonoBehaviour
     [SerializeField]
     private float _gravity;
 
-    private InventoryHolder _playerInventory;
     private Rigidbody _rb;
 
     private Vector3 _direction;
@@ -17,7 +16,6 @@ public class Player : MonoBehaviour
     void Start()
     {
         _rb = GetComponent<Rigidbody>();
-        _playerInventory = GetComponent<InventoryHolder>();
     }
 
     void Update()
@@ -45,10 +43,6 @@ public class Player : MonoBehaviour
     {
         if (collision.gameObject.tag == "Item")
         {
-            if (_playerInventory.InventorySystem.AddItemToInventory(collision.gameObject.GetComponent<ItemObject>().ItemData))
-            {
-                collision.gameObject.SetActive(false);
-            }
         }
     }
 
