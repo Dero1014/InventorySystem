@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class Player : MonoBehaviour
@@ -13,9 +14,12 @@ public class Player : MonoBehaviour
 
     private Vector3 _direction;
 
+    private InventoryHolder _inventory;
+
     void Start()
     {
         _rb = GetComponent<Rigidbody>();
+        _inventory = GetComponent<InventoryHolder>();
     }
 
     void Update()
@@ -43,6 +47,9 @@ public class Player : MonoBehaviour
     {
         if (collision.gameObject.tag == "Item")
         {
+            var itemObj = collision.gameObject.GetComponentInParent<ItemObject>();
+            if(_inventory.InventorySystem.AddToInventory(itemObj.ItemData, itemObj.Stack))
+                itemObj.gameObject.SetActive(false);
         }
     }
 
