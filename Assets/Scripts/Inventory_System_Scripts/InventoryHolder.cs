@@ -10,9 +10,8 @@ public class InventoryHolder : MonoBehaviour
     private InventorySystem _inventorySystem;
     public InventorySystem InventorySystem => _inventorySystem;
 
-    void Start()
+    void Awake()
     {
-        _inventorySystem = new InventorySystem();
         for (int i = 0; i < InventorySize; i++)
         {
             _inventorySystem.InitSlot();

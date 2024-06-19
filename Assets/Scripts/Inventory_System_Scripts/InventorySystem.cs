@@ -2,6 +2,8 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
+using System.Linq;
 
 [System.Serializable]
 public class InventorySystem
@@ -10,6 +12,10 @@ public class InventorySystem
     private List<InventorySlot> _inventorySlots = new List<InventorySlot>();
 
     public List<InventorySlot> InventorySlots => _inventorySlots;
+
+    public InventoryUIDisplay InventoryDisplay;
+
+    //public UnityEvent UpdateSlotEvent = new UnityEvent();
     
     public void InitSlot()
     {
@@ -34,6 +40,18 @@ public class InventorySystem
             slot.AssignItem(itemData, amount + 1);
             result = true;
         }
+
+        if (result)
+        {
+            foreach (var uiSlot in InventoryDisplay.InventoryUISlots)
+            {
+                if (uiSlot.AssignedSlot == slot)
+                {
+                    uiSlot.UpdateSlotUI();
+                }
+            }
+        }
+
         return result;
     }
 
