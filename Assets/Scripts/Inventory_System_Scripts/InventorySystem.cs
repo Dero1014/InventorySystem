@@ -37,7 +37,7 @@ public class InventorySystem
         else if (CheckFreeSlot(itemData, out slot))
         {
             // store item
-            slot.AssignItem(itemData, amount + 1);
+            slot.AssignItem(itemData, amount);
             result = true;
         }
 

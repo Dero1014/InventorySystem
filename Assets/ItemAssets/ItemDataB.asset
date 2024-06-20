@@ -17,4 +17,4 @@ MonoBehaviour:
   Name: ItemDataB
   Description: This is item B
   MaxSize: 2
-  ItemColor: {r: 0.3820755, g: 0.41344061, b: 1, a: 0}
+  ItemColor: {r: 0.3820755, g: 0.41344061, b: 1, a: 1}

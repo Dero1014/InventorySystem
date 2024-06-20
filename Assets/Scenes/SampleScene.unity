@@ -1398,6 +1398,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   InventoryHolder: {fileID: 1451223709}
+  _inventorySystem:
+    _inventorySlots: []
+    InventoryDisplay: {fileID: 0}
   _inventoryUISlots: []
 --- !u!1 &373084164
 GameObject:
@@ -2770,6 +2773,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 794055312}
+  - component: {fileID: 794055313}
   m_Layer: 5
   m_Name: MouseUI
   m_TagString: Untagged
@@ -2799,6 +2803,23 @@ RectTransform:
   m_AnchoredPosition: {x: 1496, y: -617}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &794055313
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 794055311}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 16cf63cd33c09fe49aa14b9346d4d6ac, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _stackText: {fileID: 0}
+  _itemImage: {fileID: 0}
+  _assignedSlot:
+    _inventoryItemData: {fileID: 0}
+    _stackSize: 0
 --- !u!1 &799323894
 GameObject:
   m_ObjectHideFlags: 0
