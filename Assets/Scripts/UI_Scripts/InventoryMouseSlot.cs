@@ -21,13 +21,11 @@ public class InventoryMouseSlot : MonoBehaviour
     public void UpdateSlot(InventoryItemData itemData, int stack)
     {
         _assignedSlot.AssignItem(itemData, stack);
-        UpdateUI();
     }
 
     public void ClearSlot()
     {
         _assignedSlot.ClearSlot();
-        UpdateUI();
     }
 
     public void UpdateUI()

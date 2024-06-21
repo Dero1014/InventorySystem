@@ -43,34 +43,39 @@ public class InventoryUISlot : MonoBehaviour, IPointerDownHandler
     
     public void OnPointerDown(PointerEventData eventData)
     {
+        bool shiftModifier = false;
+        if (Input.GetKey(KeyCode.LeftShift))
+        {
+            shiftModifier = true;
+        }
+
         // On click check if Inventory mouse is empty or full
         if (_mouseSlot.AssignedSlot.InventoryItemData == null)
         {
-            print("me be null");
+            
             // If mouse empty then give the mouse the slot
             _mouseSlot.UpdateSlot(_assignedSlot.InventoryItemData, _assignedSlot.StackSize);
             _assignedSlot.ClearSlot();
+                
             UpdateSlotUI();
             _mouseSlot.UpdateUI();
+
         }
         else if (_mouseSlot.AssignedSlot.InventoryItemData != null)
         {
             // If mouse not empty but the slot is then give slot
             if (_assignedSlot.InventoryItemData == null)
             {
-                print("Yup nothing there");
                 _assignedSlot.AssignItem(_mouseSlot.AssignedSlot.InventoryItemData, _mouseSlot.AssignedSlot.StackSize);
                 _mouseSlot.ClearSlot();
             }
             else
             {
-                print("Owo what you got there");
                 // If mouse not empty and slot not empty
                 // check if the slots are the same
                 if (_mouseSlot.AssignedSlot.InventoryItemData == _assignedSlot.InventoryItemData)
                 {
                     // try to add to the slot
-                    print("OMG YOU WE SAME");
                     int remaining;
                     if (_assignedSlot.RemainingStack(_mouseSlot.AssignedSlot.StackSize, out remaining))
                     {
@@ -79,23 +84,34 @@ public class InventoryUISlot : MonoBehaviour, IPointerDownHandler
                     }
                     else if (remaining < 0)
                     {
-                        _assignedSlot.AddAmount(_mouseSlot.AssignedSlot.StackSize + remaining);
-                        _mouseSlot.AssignedSlot.RemoveAmount(-remaining);
+                        if (_mouseSlot.AssignedSlot.StackSize + remaining != 0)
+                        {
+                            _assignedSlot.AddAmount(_mouseSlot.AssignedSlot.StackSize + remaining);
+                            _mouseSlot.AssignedSlot.RemoveAmount(-remaining);
+                        }
+                        else
+                        {
+                            Swap();
+                        }
                     }
                 }
                 else
                 {
-                    var tempItem = _mouseSlot.AssignedSlot.InventoryItemData;
-                    var tempStack = _mouseSlot.AssignedSlot.StackSize;
-
-                    _mouseSlot.UpdateSlot(_assignedSlot.InventoryItemData, _assignedSlot.StackSize);
-                    _assignedSlot.AssignItem(tempItem, tempStack);
-                    
+                    Swap();
                 }
             }
             _mouseSlot.UpdateUI();
             UpdateSlotUI();
         }
+    }
+
+    void Swap()
+    {
+        var tempItem = _mouseSlot.AssignedSlot.InventoryItemData;
+        var tempStack = _mouseSlot.AssignedSlot.StackSize;
+
+        _mouseSlot.UpdateSlot(_assignedSlot.InventoryItemData, _assignedSlot.StackSize);
+        _assignedSlot.AssignItem(tempItem, tempStack);
     }
 
 }
