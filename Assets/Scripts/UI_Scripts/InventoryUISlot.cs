@@ -11,7 +11,7 @@ public class InventoryUISlot : MonoBehaviour, IPointerDownHandler
     [SerializeField] private Image _itemImage;
     [SerializeField] private InventorySlot _assignedSlot;
 
-    private InventoryMouseSlot _mouseSlot;
+    private InventoryUIDisplay _myInventoryDisplay;
 
     public InventorySlot AssignedSlot => _assignedSlot;
 
@@ -19,7 +19,7 @@ public class InventoryUISlot : MonoBehaviour, IPointerDownHandler
     {
         _stackText = GetComponentInChildren<TextMeshProUGUI>();
         _itemImage = GetComponentInChildren<Image>();
-        _mouseSlot = FindObjectOfType<InventoryMouseSlot>();
+        _myInventoryDisplay = GetComponentInParent<InventoryUIDisplay>();
     }
 
     public void AssignSlotToUI(InventorySlot slot)
@@ -43,75 +43,7 @@ public class InventoryUISlot : MonoBehaviour, IPointerDownHandler
     
     public void OnPointerDown(PointerEventData eventData)
     {
-        bool shiftModifier = false;
-        if (Input.GetKey(KeyCode.LeftShift))
-        {
-            shiftModifier = true;
-        }
-
-        // On click check if Inventory mouse is empty or full
-        if (_mouseSlot.AssignedSlot.InventoryItemData == null)
-        {
-            
-            // If mouse empty then give the mouse the slot
-            _mouseSlot.UpdateSlot(_assignedSlot.InventoryItemData, _assignedSlot.StackSize);
-            _assignedSlot.ClearSlot();
-                
-            UpdateSlotUI();
-            _mouseSlot.UpdateUI();
-
-        }
-        else if (_mouseSlot.AssignedSlot.InventoryItemData != null)
-        {
-            // If mouse not empty but the slot is then give slot
-            if (_assignedSlot.InventoryItemData == null)
-            {
-                _assignedSlot.AssignItem(_mouseSlot.AssignedSlot.InventoryItemData, _mouseSlot.AssignedSlot.StackSize);
-                _mouseSlot.ClearSlot();
-            }
-            else
-            {
-                // If mouse not empty and slot not empty
-                // check if the slots are the same
-                if (_mouseSlot.AssignedSlot.InventoryItemData == _assignedSlot.InventoryItemData)
-                {
-                    // try to add to the slot
-                    int remaining;
-                    if (_assignedSlot.RemainingStack(_mouseSlot.AssignedSlot.StackSize, out remaining))
-                    {
-                        _assignedSlot.AddAmount(_mouseSlot.AssignedSlot.StackSize);
-                        _mouseSlot.ClearSlot();
-                    }
-                    else if (remaining < 0)
-                    {
-                        if (_mouseSlot.AssignedSlot.StackSize + remaining != 0)
-                        {
-                            _assignedSlot.AddAmount(_mouseSlot.AssignedSlot.StackSize + remaining);
-                            _mouseSlot.AssignedSlot.RemoveAmount(-remaining);
-                        }
-                        else
-                        {
-                            Swap();
-                        }
-                    }
-                }
-                else
-                {
-                    Swap();
-                }
-            }
-            _mouseSlot.UpdateUI();
-            UpdateSlotUI();
-        }
-    }
-
-    void Swap()
-    {
-        var tempItem = _mouseSlot.AssignedSlot.InventoryItemData;
-        var tempStack = _mouseSlot.AssignedSlot.StackSize;
-
-        _mouseSlot.UpdateSlot(_assignedSlot.InventoryItemData, _assignedSlot.StackSize);
-        _assignedSlot.AssignItem(tempItem, tempStack);
+        _myInventoryDisplay.OnSlotClick(this);
     }
 
 }
